@@ -696,6 +696,7 @@ function updateCarousel() {
     if (dir === 'right') return 'translate(125%, 30px) rotate(12deg) scale(0.95)';
     if (dir === 'up') return `translate(0px, -${cardHeight + 40}px) scale(0.9)`;
     if (dir === 'down') return `translate(0px, ${cardHeight + 40}px) scale(0.9)`;
+    if (dir === 'none') return 'translate(0px, 0px) scale(1)';
     return 'scale(0.85)'; // fade
   }
 
@@ -739,9 +740,40 @@ function updateCarousel() {
         const slideTransform = getSlideOutTransform();
         
         // Directions are compatible for continuous swoop if they match, or if slide-in is set to default 'fade'
-        const isContinuous = (settings.slideInDirection === 'fade' || settings.slideInDirection === settings.slideDirection) && (settings.slideDirection !== 'fade');
+        const isContinuous = (settings.slideInDirection === 'fade' || settings.slideInDirection === settings.slideDirection) && (settings.slideDirection !== 'fade') && (settings.slideDirection !== 'none');
         
-        if (isContinuous) {
+        if (settings.slideDirection === 'none') {
+          // INSTANT JUMP CUT / HIDE (No movement, no smoothing, instant hide)
+          const pCut = Math.min(pEnd, holdEnd + 0.01);
+          
+          keyframesCSS += `      ${pStart.toFixed(2)}% {\n`;
+          keyframesCSS += `        transform: ${propsNow.transform};\n`;
+          keyframesCSS += `        opacity: ${propsNow.opacity};\n`;
+          keyframesCSS += `        box-shadow: ${propsNow.boxShadow};\n`;
+          keyframesCSS += `        z-index: ${propsNow.zIndex};\n`;
+          keyframesCSS += `      }\n`;
+          
+          keyframesCSS += `      ${holdEnd.toFixed(2)}% {\n`;
+          keyframesCSS += `        transform: ${propsNow.transform};\n`;
+          keyframesCSS += `        opacity: ${propsNow.opacity};\n`;
+          keyframesCSS += `        box-shadow: ${propsNow.boxShadow};\n`;
+          keyframesCSS += `        z-index: ${propsNow.zIndex};\n`;
+          keyframesCSS += `      }\n`;
+          
+          keyframesCSS += `      ${pCut.toFixed(2)}% {\n`;
+          keyframesCSS += `        transform: ${propsNow.transform};\n`;
+          keyframesCSS += `        opacity: 0;\n`;
+          keyframesCSS += `        box-shadow: none;\n`;
+          keyframesCSS += `        z-index: ${propsNext.zIndex};\n`;
+          keyframesCSS += `      }\n`;
+          
+          keyframesCSS += `      ${pEnd.toFixed(2)}% {\n`;
+          keyframesCSS += `        transform: ${propsNext.transform};\n`;
+          keyframesCSS += `        opacity: ${propsNext.opacity};\n`;
+          keyframesCSS += `        box-shadow: ${propsNext.boxShadow};\n`;
+          keyframesCSS += `        z-index: ${propsNext.zIndex};\n`;
+          keyframesCSS += `      }\n`;
+        } else if (isContinuous) {
           // CONTINUOUS ORBITAL SWOOP (Card stays visible, swooping out and back in seamlessly)
           const isHiddenBack = parseFloat(propsNext.opacity) === 0;
           const midOpacity = isHiddenBack ? 0 : Math.max(0.7, parseFloat(propsNext.opacity));

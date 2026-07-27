@@ -221,18 +221,22 @@
 
           <div class="control-group">
             <div class="label-with-value">
-              <label for="loop-duration">Cycle Duration (seconds)</label>
-              <span class="range-val" id="loop-duration-val">8s</span>
+              <label for="card-duration">Card Display Time (ms)</label>
+              <span class="range-val" id="card-duration-val">2000ms</span>
             </div>
-            <input type="range" id="loop-duration" min="2" max="25" step="0.5" value="8" class="form-range">
+            <input type="range" id="card-duration" min="500" max="10000" step="100" value="2000" class="form-range">
           </div>
 
           <div class="control-group">
             <div class="label-with-value">
-              <label for="transition-ratio">Transition Time Ratio</label>
-              <span class="range-val" id="transition-ratio-val">20%</span>
+              <label for="transition-duration">Transition Time (ms)</label>
+              <span class="range-val" id="transition-duration-val">500ms</span>
             </div>
-            <input type="range" id="transition-ratio" min="5" max="50" step="5" value="20" class="form-range">
+            <input type="range" id="transition-duration" min="100" max="3000" step="50" value="500" class="form-range">
+          </div>
+
+          <div class="timing-summary-badge" id="timing-summary">
+            Total Loop: <strong id="loop-summary-val">7.5s</strong> (<span id="loop-details-val">3 cards × 2.5s</span>)
           </div>
 
           <div class="control-group">

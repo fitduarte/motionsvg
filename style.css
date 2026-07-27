@@ -487,6 +487,24 @@ body.light-theme .segment-btn.active {
   margin-bottom: 12px;
 }
 
+.timing-summary-badge {
+  font-size: 12px;
+  color: var(--text-secondary);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timing-summary-badge strong {
+  color: var(--accent-secondary);
+  font-weight: 600;
+}
+
 .control-group.half {
   flex: 1;
   margin-bottom: 0;

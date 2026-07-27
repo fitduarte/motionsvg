@@ -17,8 +17,8 @@ const FACTORY_SETTINGS = {
   bgCardOpacity: 75,
   marginX: 120,
   marginY: 80,
-  loopDuration: 8,
-  transitionRatio: 20,
+  cardDuration: 2000,
+  transitionDuration: 500,
   slideDirection: 'left',
   slideInDirection: 'fade',
   timingEasing: 'cubic-bezier(0.25, 1, 0.5, 1)'
@@ -55,10 +55,10 @@ const valStackOffset = document.getElementById('stack-offset-val');
 const inputScaleStep = document.getElementById('scale-step');
 const valScaleStep = document.getElementById('scale-step-val');
 const inputStackDirection = document.getElementById('stack-direction');
-const inputLoopDuration = document.getElementById('loop-duration');
-const valLoopDuration = document.getElementById('loop-duration-val');
-const inputTransitionRatio = document.getElementById('transition-ratio');
-const valTransitionRatio = document.getElementById('transition-ratio-val');
+const inputCardDuration = document.getElementById('card-duration');
+const valCardDuration = document.getElementById('card-duration-val');
+const inputTransitionDuration = document.getElementById('transition-duration');
+const valTransitionDuration = document.getElementById('transition-duration-val');
 const inputSlideDirection = document.getElementById('slide-direction');
 const inputSlideInDirection = document.getElementById('slide-in-direction');
 const inputTimingEasing = document.getElementById('timing-easing');
@@ -134,8 +134,8 @@ function setupEventListeners() {
   bindInput(inputCardShadow, valCardShadow, 'cardShadow', '%', parseInt);
   bindInput(inputStackOffset, valStackOffset, 'stackOffset', 'px', parseInt);
   bindInput(inputScaleStep, valScaleStep, 'scaleStep', '', parseFloat);
-  bindInput(inputLoopDuration, valLoopDuration, 'loopDuration', 's', parseFloat);
-  bindInput(inputTransitionRatio, valTransitionRatio, 'transitionRatio', '%', parseInt);
+  bindInput(inputCardDuration, valCardDuration, 'cardDuration', 'ms', parseInt);
+  bindInput(inputTransitionDuration, valTransitionDuration, 'transitionDuration', 'ms', parseInt);
   bindInput(inputBgCardOpacity, valBgCardOpacity, 'bgCardOpacity', '%', parseInt);
   bindInput(inputMarginX, valMarginX, 'marginX', 'px', parseInt);
   bindInput(inputMarginY, valMarginY, 'marginY', 'px', parseInt);
@@ -387,11 +387,15 @@ function syncUIFromSettings() {
   inputBgCardOpacity.value = settings.bgCardOpacity;
   valBgCardOpacity.textContent = settings.bgCardOpacity + '%';
   
-  inputLoopDuration.value = settings.loopDuration;
-  valLoopDuration.textContent = settings.loopDuration + 's';
+  if (inputCardDuration) {
+    inputCardDuration.value = settings.cardDuration || 2000;
+    valCardDuration.textContent = (settings.cardDuration || 2000) + 'ms';
+  }
   
-  inputTransitionRatio.value = settings.transitionRatio;
-  valTransitionRatio.textContent = settings.transitionRatio + '%';
+  if (inputTransitionDuration) {
+    inputTransitionDuration.value = settings.transitionDuration || 500;
+    valTransitionDuration.textContent = (settings.transitionDuration || 500) + 'ms';
+  }
   
   inputSlideDirection.value = settings.slideDirection;
   inputSlideInDirection.value = settings.slideInDirection;
@@ -611,8 +615,22 @@ function updateCarousel() {
   const cardY = settings.marginY; // Safe spacing from top of SVG viewport
 
   const N = cards.length;
+  const cardDurationMs = settings.cardDuration || 2000;
+  const transitionDurationMs = settings.transitionDuration || 500;
+  const stepTimeMs = cardDurationMs + transitionDurationMs;
+  const totalLoopMs = N * stepTimeMs;
+  const loopDurationSec = (totalLoopMs / 1000).toFixed(2);
+
   const L = 100 / N;
-  const T_dur = L * (settings.transitionRatio / 100);
+  const T_dur = (transitionDurationMs / totalLoopMs) * 100;
+
+  const loopSummaryVal = document.getElementById('loop-summary-val');
+  const loopDetailsVal = document.getElementById('loop-details-val');
+  if (loopSummaryVal && loopDetailsVal) {
+    loopSummaryVal.textContent = `${loopDurationSec}s`;
+    loopDetailsVal.textContent = `${N} cards × ${(stepTimeMs / 1000).toFixed(1)}s`;
+  }
+
   const spacing = settings.stackOffset;
   const scaleStep = settings.scaleStep;
   const shadow = settings.cardShadow;
@@ -836,7 +854,7 @@ function updateCarousel() {
   let cardsCSS = '';
   for (let i = 0; i < N; i++) {
     cardsCSS += `    .card-${i} {\n`;
-    cardsCSS += `      animation: card-anim-${i} ${settings.loopDuration}s ${settings.timingEasing} infinite;\n`;
+    cardsCSS += `      animation: card-anim-${i} ${loopDurationSec}s ${settings.timingEasing} infinite;\n`;
     cardsCSS += `    }\n`;
   }
 

@@ -79,6 +79,27 @@
           <h2>3. Design Configuration</h2>
           
           <div class="control-group">
+            <label>Display Mode</label>
+            <div class="segment-toggle" id="carousel-type-toggle">
+              <button type="button" class="segment-btn active" data-type="carousel">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="2" y="6" width="12" height="12" rx="2" stroke-linejoin="round"/>
+                  <rect x="6" y="2" width="12" height="12" rx="2" fill="currentColor" opacity="0.3"/>
+                  <rect x="10" y="10" width="12" height="12" rx="2" stroke-linejoin="round"/>
+                </svg>
+                Carousel
+              </button>
+              <button type="button" class="segment-btn" data-type="stack">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="5" y="5" width="14" height="14" rx="2" stroke-linejoin="round"/>
+                  <rect x="3" y="3" width="14" height="14" rx="2" stroke-linejoin="round" opacity="0.5"/>
+                </svg>
+                Stack
+              </button>
+            </div>
+          </div>
+
+          <div class="control-group">
             <label for="aspect-ratio">Aspect Ratio</label>
             <select id="aspect-ratio" class="form-select">
               <option value="portrait">Portrait (3:4 - App Cards)</option>
@@ -131,7 +152,7 @@
             </div>
           </div>
 
-          <div class="control-row">
+          <div class="control-row depth-only-control">
             <div class="control-group half">
               <div class="label-with-value">
                 <label for="stack-offset">Offset (px)</label>
@@ -148,7 +169,7 @@
             </div>
           </div>
 
-          <div class="control-group">
+          <div class="control-group depth-only-control">
             <label for="stack-direction">Stack Behind Direction</label>
             <select id="stack-direction" class="form-select">
               <option value="up" selected>Upwards (Stacked at Top)</option>
@@ -158,7 +179,7 @@
             </select>
           </div>
 
-          <div class="control-row">
+          <div class="control-row depth-only-control">
             <div class="control-group half">
               <label for="max-visible">Visible Cards</label>
               <select id="max-visible" class="form-select">
@@ -225,7 +246,7 @@
             </select>
           </div>
 
-          <div class="control-group">
+          <div class="control-group depth-only-control">
             <label for="slide-in-direction">Slide In Direction (Back Card Entry)</label>
             <select id="slide-in-direction" class="form-select">
               <option value="fade" selected>Pure Fade In (No movement)</option>

@@ -24,16 +24,14 @@ The output SVG file must animate seamlessly in a continuous loop using **pure CS
 
 ```
 Carousel/
-├── AGENTS.md         # This repository guide for AI agents
+├── AGENTS.md         # Repository guide for AI agents
 ├── index.html        # Main Studio application HTML
 ├── style.css         # Main application stylesheet & theme tokens
-├── app.js            # Main application logic & SVG generation engine
-├── v1/               # [LEGACY] Initial prototype archive (DO NOT EDIT)
-└── v2/               # [LEGACY] Second iteration archive (DO NOT EDIT)
+└── app.js            # Main application logic & SVG generation engine
 ```
 
 > [!IMPORTANT]
-> **Workspace Boundary Rule:** Active development must occur **exclusively in the root directory** (`index.html`, `style.css`, `app.js`). The `v1/` and `v2/` directories are historical snapshots and must remain unmodified.
+> **Workspace Boundary Rule:** Active development must occur **exclusively in the root directory** (`index.html`, `style.css`, `app.js`).
 
 ---
 

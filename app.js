@@ -2,6 +2,7 @@
 let cards = [];
 
 const FACTORY_SETTINGS = {
+  carouselType: 'carousel',
   aspectRatio: 'square',
   cardWidth: 300,
   cardHeight: 300,
@@ -35,6 +36,7 @@ const previewStage = document.getElementById('preview-stage');
 const fileSizeBadge = document.getElementById('file-size-badge');
 const downloadBtn = document.getElementById('download-btn');
 const themeToggle = document.getElementById('theme-toggle');
+const carouselTypeToggle = document.getElementById('carousel-type-toggle');
 
 // Control inputs
 const inputAspectRatio = document.getElementById('aspect-ratio');
@@ -191,6 +193,16 @@ function setupEventListeners() {
       updateCarousel();
     }
   });
+
+  // Mode toggle listener
+  if (carouselTypeToggle) {
+    const btns = carouselTypeToggle.querySelectorAll('.segment-btn');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        setCarouselType(btn.dataset.type);
+      });
+    });
+  }
 
   // Dropdown standard selections
   inputBgFit.addEventListener('change', (e) => {
@@ -390,6 +402,34 @@ function syncUIFromSettings() {
   
   inputMarginY.value = settings.marginY;
   valMarginY.textContent = settings.marginY + 'px';
+
+  setCarouselType(settings.carouselType || 'carousel');
+}
+
+// Sets active carousel type mode and toggles mode-specific UI controls
+function setCarouselType(type) {
+  settings.carouselType = type;
+  if (carouselTypeToggle) {
+    const btns = carouselTypeToggle.querySelectorAll('.segment-btn');
+    btns.forEach(btn => {
+      if (btn.dataset.type === type) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  const depthControls = document.querySelectorAll('.depth-only-control');
+  depthControls.forEach(el => {
+    if (type === 'stack') {
+      el.classList.add('hidden');
+    } else {
+      el.classList.remove('hidden');
+    }
+  });
+
+  updateCarousel();
 }
 
 // Binds inputs with their label and syncs changes to state
@@ -580,6 +620,22 @@ function updateCarousel() {
   
   // Helper to compile state styles
   function getStateProps(S) {
+    if (settings.carouselType === 'stack') {
+      const shadowBlur = Math.round(28 * (1 - Math.min(S, 2) * 0.15));
+      const shadowY = Math.round(12 * (1 - Math.min(S, 2) * 0.15));
+      const shadowAlpha = (shadow / 100).toFixed(2);
+      const boxShadow = `0 ${shadowY}px ${shadowBlur}px rgba(0, 0, 0, ${shadowAlpha})`;
+      
+      const zIndex = N - S;
+      
+      return {
+        transform: 'translate(0px, 0px) scale(1)',
+        opacity: S === N - 1 ? '0' : '1',
+        boxShadow: boxShadow,
+        zIndex: zIndex
+      };
+    }
+
     const s = Math.max(0.1, 1 - S * scaleStep);
     
     // Shift calculations based on direction

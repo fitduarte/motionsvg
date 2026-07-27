@@ -421,6 +421,59 @@ body.light-theme .sidebar-panel::-webkit-scrollbar-thumb:hover {
 }
 
 /* Control Components */
+.segment-toggle {
+  display: flex;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 3px;
+  gap: 4px;
+}
+
+.segment-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.segment-btn:hover {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.segment-btn.active {
+  color: #ffffff;
+  background: var(--accent-gradient);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+  font-weight: 600;
+}
+
+body.light-theme .segment-btn.active {
+  color: #ffffff;
+}
+
+.depth-only-control {
+  transition: opacity 0.25s ease, max-height 0.25s ease, margin 0.25s ease;
+  max-height: 200px;
+  opacity: 1;
+  overflow: hidden;
+}
+
+.depth-only-control.hidden {
+  display: none !important;
+}
+
 .control-group {
   display: flex;
   flex-direction: column;
